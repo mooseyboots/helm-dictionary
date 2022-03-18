@@ -275,7 +275,7 @@ Optionally, use only dictionary DICT and provide input QUERY."
               helm-dictionary-database))))
         (input (or query (thing-at-point 'word))))
     (helm :sources (append helm-source-dictionary (list helm-source-dictionary-online))
-          :full-frame t
+          :full-frame nil
           :default input
           :input (when query input)
           :candidate-number-limit 500
