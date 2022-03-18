@@ -259,18 +259,25 @@ browser in `helm-browse-url-default-browser-alist'"
   "Source for online look-up.")
 
 ;;;###autoload
-(defun helm-dictionary ()
+(defun helm-dictionary (&optional dict query)
+  "Load helm-dictionary.
+Optionally, use only dictionary DICT and provide input QUERY."
   (interactive)
   (let ((helm-source-dictionary
-         (mapcar
-          (lambda (x) (helm-dictionary-build (car x) (cdr x)))
-          (if (stringp helm-dictionary-database)
-              (list (cons "Search dictionary" helm-dictionary-database))
-            helm-dictionary-database)))
-        (input (thing-at-point 'word)))
+         (if (and dict
+                  (member dict
+                          helm-dictionary-database))
+             (helm-dictionary-build (car dict) (cdr dict))
+           (mapcar
+            (lambda (x) (helm-dictionary-build (car x) (cdr x)))
+            (if (stringp helm-dictionary-database)
+                (list (cons "Search dictionary" helm-dictionary-database))
+              helm-dictionary-database))))
+        (input (or query (thing-at-point 'word))))
     (helm :sources (append helm-source-dictionary (list helm-source-dictionary-online))
           :full-frame t
           :default input
+          :input (when query input)
           :candidate-number-limit 500
           :buffer "*helm dictionary*")))
 
