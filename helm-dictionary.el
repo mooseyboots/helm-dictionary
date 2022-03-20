@@ -259,11 +259,12 @@ browser in `helm-browse-url-default-browser-alist'"
   "Source for online look-up.")
 
 ;;;###autoload
-(defun helm-dictionary (&optional dict query not-full)
+(defun helm-dictionary (&optional dict-name query not-full)
   "Load helm-dictionary.
-Optionally, use only dictionary DICT and provide input QUERY."
+Optionally, use only dictionary DICT-NAME and provide input QUERY."
   (interactive)
-  (let ((helm-source-dictionary
+  (let* ((dict (assoc dict-name helm-dictionary-database))
+         (helm-source-dictionary
          (if (and dict
                   (member dict
                           helm-dictionary-database))
