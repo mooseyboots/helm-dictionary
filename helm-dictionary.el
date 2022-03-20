@@ -259,7 +259,7 @@ browser in `helm-browse-url-default-browser-alist'"
   "Source for online look-up.")
 
 ;;;###autoload
-(defun helm-dictionary (&optional dict query)
+(defun helm-dictionary (&optional dict query not-full)
   "Load helm-dictionary.
 Optionally, use only dictionary DICT and provide input QUERY."
   (interactive)
@@ -275,7 +275,7 @@ Optionally, use only dictionary DICT and provide input QUERY."
               helm-dictionary-database))))
         (input (or query (thing-at-point 'word))))
     (helm :sources (append helm-source-dictionary (list helm-source-dictionary-online))
-          :full-frame nil
+          :full-frame (if not-full nil t)
           :default input
           :input (when query input)
           :candidate-number-limit 500
